@@ -1748,7 +1748,7 @@ async function initMap() {
           const request = {
               origin: markers[0].getPosition(),
               destination: markers[1].getPosition(),
-              travelMode: google.maps.TravelMode.DRIVING,
+              travelMode: google.maps.TravelMode.TRANSIT,
               transitOptions: {
                 modes: [google.maps.TransitMode.BUS]
               }
