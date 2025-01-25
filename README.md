@@ -1,40 +1,7 @@
 # Gopher Trip (gophertrip)
 
 Information for all bus routes running through the University of Minnesota—Twin Cities.
+As of Jan 25, only includes information for routes running through the Twin Cities campus. St. Paul coming soon.
 
-## Install the dependencies
-```bash
-yarn
-# or
-npm install
-```
-
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-quasar dev
-```
-
-
-### Lint the files
-```bash
-yarn lint
-# or
-npm run lint
-```
-
-
-### Format the files
-```bash
-yarn format
-# or
-npm run format
-```
-
-
-### Build the app for production
-```bash
-quasar build
-```
-
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+Email me sirun001@umn.edu with any questions/requests.
+Made w/ Quasar. Not all code (API fetch requests 🤫) is accessible.
