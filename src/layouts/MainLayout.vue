@@ -1,85 +1,3 @@
-<!-- <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar class="bg-red-10">
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
-
-        <q-toolbar-title> GopherTrip </q-toolbar-title>
-
-        <div>siruno.dev</div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
-      </q-list>
-    </q-drawer>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
-</template>
-
-<script setup>
-import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
-
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
-  },
-]
-
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
-</script> -->
-
 <template>
   <q-layout view="lHh Lpr lFf">
     <!-- Top Header Bar -->
@@ -138,14 +56,12 @@ function toggleLeftDrawer() {
               </div>
             </q-item>
 
-            <!-- Route A Checkbox (Conditionally Rendered) -->
             <q-item v-if="showRoutes" class="q-py-xs" style="padding-left: 25px">
-              <q-checkbox v-model="selectedRoutes" val="Route A" label="Route A" size="sm" />
+              <q-checkbox v-model="selectedRoutes" val="Route 2" label="Route 2" size="sm" />
             </q-item>
 
-            <!-- Route B Checkbox (Conditionally Rendered) -->
             <q-item v-if="showRoutes" class="q-py-xs" style="padding-left: 25px">
-              <q-checkbox v-model="selectedRoutes" val="Route B" label="Route B" size="sm" />
+              <q-checkbox v-model="selectedRoutes" val="Route 6" label="Route 6" size="sm" />
             </q-item>
           </q-list>
         </q-tab-panel>
@@ -171,6 +87,7 @@ function toggleLeftDrawer() {
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { drawRoute, clearRoute } from '../../script.js' // Import the functions
 
 // Controls the visibility of the bottom drawer
 const bottomDrawerOpen = ref(false)
@@ -178,13 +95,13 @@ const bottomDrawerOpen = ref(false)
 // Controls the selected tab (Routes or Stops)
 const selectedTab = ref('routes') // Default to "Routes"
 
-// Controls the selected routes (Route A and Route B)
+// Controls the selected routes (Route 2 and Route 6)
 const selectedRoutes = ref([])
 
 // Controls the state of the "Select All" checkbox
 const allRoutesSelected = ref(false)
 
-// Controls the visibility of Route A and Route B
+// Controls the visibility of Route 2 and Route 6
 const showRoutes = ref(false)
 
 // Function to toggle the bottom drawer
@@ -192,7 +109,7 @@ function toggleBottomDrawer() {
   bottomDrawerOpen.value = !bottomDrawerOpen.value
 }
 
-// Function to toggle the visibility of Route A and Route B
+// Function to toggle the visibility of Route 2 and Route 6
 function toggleRoutesVisibility() {
   showRoutes.value = !showRoutes.value
 }
@@ -200,7 +117,7 @@ function toggleRoutesVisibility() {
 // Function to toggle all routes
 function toggleAllRoutes(value) {
   if (value === true) {
-    selectedRoutes.value = ['Route A', 'Route B']
+    selectedRoutes.value = ['Route 2', 'Route 6']
   } else if (value === false) {
     selectedRoutes.value = []
   }
@@ -213,6 +130,23 @@ watch(selectedRoutes, (newVal) => {
   } else if (newVal.length === 0) {
     allRoutesSelected.value = false
   }
+})
+
+// Watch for changes in selectedRoutes to call drawRoute or clearRoute
+watch(selectedRoutes, (newVal, oldVal) => {
+  // Determine which routes were added or removed
+  const addedRoutes = newVal.filter((route) => !oldVal.includes(route))
+  const removedRoutes = oldVal.filter((route) => !newVal.includes(route))
+
+  // Call drawRoute for added routes
+  addedRoutes.forEach((route) => {
+    drawRoute(route)
+  })
+
+  // Call clearRoute for removed routes
+  removedRoutes.forEach((route) => {
+    clearRoute(route)
+  })
 })
 
 // Compute the style for the active tab indicator
