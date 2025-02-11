@@ -56,10 +56,12 @@
               </div>
             </q-item>
 
+            <!-- Route 2 Checkbox (Conditionally Rendered) -->
             <q-item v-if="showRoutes" class="q-py-xs" style="padding-left: 25px">
               <q-checkbox v-model="selectedRoutes" val="Route 2" label="Route 2" size="sm" />
             </q-item>
 
+            <!-- Route 6 Checkbox (Conditionally Rendered) -->
             <q-item v-if="showRoutes" class="q-py-xs" style="padding-left: 25px">
               <q-checkbox v-model="selectedRoutes" val="Route 6" label="Route 6" size="sm" />
             </q-item>
@@ -87,7 +89,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { drawRoute, clearRoute } from '../../script.js' // Import the functions
+import log from '../layouts/out'
 
 // Controls the visibility of the bottom drawer
 const bottomDrawerOpen = ref(false)
@@ -123,30 +125,32 @@ function toggleAllRoutes(value) {
   }
 }
 
-// Watch for changes in selectedRoutes to update the "Select All" checkbox
-watch(selectedRoutes, (newVal) => {
-  if (newVal.length === 2) {
-    allRoutesSelected.value = true
-  } else if (newVal.length === 0) {
-    allRoutesSelected.value = false
-  }
-})
+// import functions from '../layouts/script'
 
-// Watch for changes in selectedRoutes to call drawRoute or clearRoute
 watch(selectedRoutes, (newVal, oldVal) => {
-  // Determine which routes were added or removed
-  const addedRoutes = newVal.filter((route) => !oldVal.includes(route))
-  const removedRoutes = oldVal.filter((route) => !newVal.includes(route))
+  // Handle route drawing/clearing
+  if (oldVal) {
+    // Find newly added routes
+    const addedRoutes = newVal.filter((route) => !oldVal.includes(route))
+    // Find removed routes
+    const removedRoutes = oldVal.filter((route) => !newVal.includes(route))
 
-  // Call drawRoute for added routes
-  addedRoutes.forEach((route) => {
-    drawRoute(route)
-  })
+    // Draw newly added routes
+    addedRoutes.forEach((route) => {
+      route = 'rt_' + route.split(' ')[1] + '.json'
+      log()
+      console.log(route)
+    })
 
-  // Call clearRoute for removed routes
-  removedRoutes.forEach((route) => {
-    clearRoute(route)
-  })
+    // Clear removed routes
+    removedRoutes.forEach((route) => {
+      route = 'rt_' + route.split(' ')[1] + '.json'
+      console.log(route)
+    })
+  }
+
+  // Update allRoutesSelected checkbox
+  allRoutesSelected.value = newVal.length === 2
 })
 
 // Compute the style for the active tab indicator
